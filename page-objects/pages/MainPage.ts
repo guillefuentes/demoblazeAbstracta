@@ -9,6 +9,9 @@ export default class MainPage extends BasePage {
     headerSection: HeaderPage;
     footerSection: FooterPage;
 
+    carrouselContainer: Locator;
+    carrouselPreviousButton: Locator;
+    carrouselNextButton: Locator;
     categoriesSection: {
         catContainer: Locator,
         phoneCategory: Locator,
@@ -20,6 +23,7 @@ export default class MainPage extends BasePage {
         productCard: {
             container: Locator,
             productName: Locator,
+            productLink: Locator,
             productPrice: Locator,
             productDescription: Locator,
         },
@@ -28,22 +32,26 @@ export default class MainPage extends BasePage {
     };
 
     readonly baseLoactors = {
+        carrouselContainer: this.page.locator('#contcar'),
+        carrouselPreviousButton: this.page.locator('#contcar').getByRole('button', { name: 'Previous' }),
+        carrouselNextButton: this.page.locator('#contcar').getByRole('button', { name: 'Next' }),
         categoriesSection: {
-            catContainer: this.page.locator('.categories'),
-            phoneCategory: this.page.locator('.categories .phone'),
-            laptopCategory: this.page.locator('.categories .laptop'),
-            monitorCategory: this.page.locator('.categories .monitor'),
+            catContainer: this.page.locator('.list-group').filter({ hasText: 'CATEGORIES' }),
+            phoneCategory: this.page.getByRole('link', { name: 'Phones' }),
+            laptopCategory: this.page.getByRole('link', { name: 'Laptops' }),
+            monitorCategory: this.page.getByRole('link', { name: 'Monitors' }),
         },
         productGridSection: {
-            gridContainer: this.page.locator('.product-grid'),
+            gridContainer: this.page.locator('#tbodyid'),
             productCard: {
-                container: this.page.locator('.product-card'),
-                productName: this.page.locator('.product-name'),
-                productPrice: this.page.locator('.product-price'),
-                productDescription: this.page.locator('.product-description'),
+                container: this.page.locator('.card'),
+                productName: this.page.locator('.card-title'),
+                productPrice: this.page.locator('.card-block h5'),
+                productLink: this.page.locator('.card-title a'),
+                productDescription: this.page.locator('#article'),
             },
-            previousButton: this.page.locator('.pagination .previous'),
-            nextButton: this.page.locator('.pagination .next')
+            previousButton: this.page.getByRole('button', { name: 'Previous' }),
+            nextButton: this.page.getByRole('button', { name: 'Next' })
         },
     };
 
@@ -54,11 +62,16 @@ export default class MainPage extends BasePage {
         this.signUpModal = new SignUpModal(page);
         this.logInModal = new LogInModal(page);
 
-        //Sections
+        //Cross-Page Sections
         this.headerSection = new HeaderPage(page);
         this.footerSection = new FooterPage(page);
 
+
         //Locators per Section
+        this.carrouselContainer = this.baseLoactors.carrouselContainer;
+        this.carrouselPreviousButton = this.baseLoactors.carrouselPreviousButton;
+        this.carrouselNextButton = this.baseLoactors.carrouselNextButton;
+
         this.categoriesSection = {
             catContainer: this.baseLoactors.categoriesSection.catContainer,
             phoneCategory: this.baseLoactors.categoriesSection.phoneCategory,
@@ -72,6 +85,7 @@ export default class MainPage extends BasePage {
                 container: this.baseLoactors.productGridSection.productCard.container,
                 productName: this.baseLoactors.productGridSection.productCard.productName,
                 productPrice: this.baseLoactors.productGridSection.productCard.productPrice,
+                productLink: this.baseLoactors.productGridSection.productCard.productLink,
                 productDescription: this.baseLoactors.productGridSection.productCard.productDescription,
             },
             previousButton: this.baseLoactors.productGridSection.previousButton,
@@ -99,5 +113,13 @@ export default class MainPage extends BasePage {
                 await this.categoriesSection.monitorCategory.click();
                 break;
         }
+    };
+
+    async clickCarrouselNext() {
+        await this.carrouselNextButton.click();
+    };
+
+    async clickCarrouselPrevious() {
+        await this.carrouselPreviousButton.click();
     };
 }

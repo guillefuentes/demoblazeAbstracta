@@ -1,61 +1,63 @@
 import { test } from '../fixtures/pageManager';
-import { writeFileSync } from 'fs';
+import { writeFileSync, mkdirSync } from 'fs';
+import * as helper from '@helpers/productHelpers';
+import ProductInformation from '@interface/ProductInformation';
 
-interface ProductDetails {
-  productTitle: string;
-  productPrice: string;
-  productLink: string;
-}
+const baseURL = process.env.BASE_URL || 'https://www.demoblaze.com/';
+const outputFilePath = `./output/ProductDetails_${Date.now()}.json`;
 
-test('basic test', async ({ actions, assert, mainPage }) => {
-    test.step('Navigate to homepage', async () => {
-        await mainPage.navigateTo('https://www.demoblaze.com/');
-        await mainPage
+test('basic test', async ({ actions, assert, mainPage }, testInfo) => {
+    await test.step('Navigate to homepage', async () => {
+        await mainPage.navigateTo(baseURL);
 
-        test.step('Verify the page URL and title', async () => {
-            await assert.pageURLContains('https://www.demoblaze.com/');
+        await test.step('Verify the page URL and title', async () => {
+            await assert.pageURLContains(baseURL);
             await assert.pageTitleIs('STORE');
         });
     });
 
-    test.step('Validate Product Grid pressence and product card elements', async () => {
-        test.step('Verify product grid is visible', async () => {
+    await test.step('Validate Product Grid pressence and product card elements', async () => {
+        await test.step('Verify product grid is visible', async () => {
             await assert.elementIsVisible(mainPage.productGridSection.gridContainer);
         });
-        test.step('Verify at least one product card is visible', async () => {
+        await test.step('Verify at least one product card is visible', async () => {
             await assert.elementIsVisible(mainPage.productGridSection.productCard.container.first());
         });
-        test.step('Verify at least one product card shows correct information', async () => {
+        await test.step('Verify at least one product card shows correct information', async () => {
             await assert.elementIsVisible(mainPage.productGridSection.productCard.productName.first());
             await assert.elementIsVisible(mainPage.productGridSection.productCard.productPrice.first());
             await assert.elementIsVisible(mainPage.productGridSection.productCard.productDescription.first());
         });
     });
 
-    const productList: ProductDetails[] = [];
+    const productList: ProductInformation[] = [];
 
-    //Simplified locators for Card elements
-    const pCards = await mainPage.productGridSection.productCard.container.all();
-    const pCardTitle = mainPage.productGridSection.productCard.productName;
-    const pCardPrice = mainPage.productGridSection.productCard.productPrice;
+    await test.step(`Extract product information from all products in list`, async () => {
+        await helper.extractProductInformation(mainPage, productList);
+    });
 
-    pCards.forEach(async (card, index) => {
-        test.step(`Store product card ${index + 1} information`, async () => {
-            const productName = await mainPage.getTextFromElement(card.locator(pCardTitle));
-            const productPrice = await mainPage.getTextFromElement(card.locator(pCardPrice));
-            const productLink = await mainPage.getElementAttribute(card.locator(pCardTitle), 'href');
+    await test.step(`Click on "Next" Pagination Button at the bottom`, async () => {
+        await actions.mouse.click(mainPage.productGridSection.nextButton);
 
-            test.step(`Push product card ${index + 1} information into an array`, async () => {
-                productList.push({
-                    productTitle: productName,
-                    productPrice: productPrice,
-                    productLink: productLink
-                });
-            });
+        await test.step(`Verify the page has loaded the next set of products`, async () => {
+            await assert.elementIsVisible(mainPage.productGridSection.productCard.container.first());
         });
     });
 
-    test.step(`Generate JSON file with Product List Details`, async () => {
-        writeFileSync('ProductDetails.json', JSON.stringify(productList, null, 2));
+
+    await test.step(`Generate JSON file with Product List Details`, async () => {
+        await test.step(`Create "output" directory, if needed`, async () => {
+            mkdirSync('./output', { recursive: true });
+        });
+        await test.step(`Write product information to JSON file`, async () => {
+            writeFileSync(outputFilePath, JSON.stringify(productList, null, 2));
+        });
+
+        await test.step(`Attach product information to test report`, async () => {
+            await testInfo.attach('ProductDetails', {
+                path: outputFilePath,
+                contentType: 'application/json'
+            });
+        });
     });
 });

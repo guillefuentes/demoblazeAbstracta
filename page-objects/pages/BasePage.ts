@@ -10,6 +10,7 @@ export default abstract class BasePage {
     // Common navigation methods for all pages
     async navigateTo(url: string): Promise<void> {
         await this.page.goto(url);
+        await this.page.waitForLoadState('load');
     };
 
     async refreshPage(): Promise<void> {
@@ -30,10 +31,9 @@ export default abstract class BasePage {
     }
 
     async getTextFromElement(locator: Locator): Promise<string | null> {
-        const text = (await locator.isEditable()) ? await locator.inputValue() : await locator.innerText();
+        const text : string = await locator.innerText();
 
-        if (text) return text;
-        else throw new Error(`Unable to retrieve text from the element: ${locator}`);
+        return text;
     };
 
     async getElementCount(locator: Locator): Promise<number> {
@@ -44,7 +44,7 @@ export default abstract class BasePage {
         return await locator.getAttribute(attributeName);
     };
 
-    protected getLocatorFromSelector(selector: string): Locator {
+    async getLocatorFromSelector(selector: string): Promise<Locator> {
         return this.page.locator(selector);
     }
 }

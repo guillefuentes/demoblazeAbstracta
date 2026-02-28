@@ -19,4 +19,17 @@ export class BrowserActions {
         await this.page.waitForTimeout(seconds * 1000);
     };
 
+    async waitUntilLoadedState(): Promise<void> {
+        await this.page.waitForLoadState('load');
+    };
+
+    async waitUntilNetworkIdle(): Promise<void> {
+        await this.page.waitForLoadState('networkidle');
+    };
+
+    async waitUntilCompleteLoad(): Promise<void> {
+        await this.page.waitForFunction(() => {
+            return document.readyState === 'complete';
+        });
+    };
 }
