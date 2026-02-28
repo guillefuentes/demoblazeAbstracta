@@ -10,7 +10,12 @@
     "target": "ESNext",
     "module": "CommonJS",
     "paths": {
-      "@poms": ["./page-objects/pages/index.ts"],
+      "@actions/*": ["helpers/actions/*"],
+      "@assertions/*": ["helpers/assertions/*"],
+      "@fixtures/*": ["fixtures/*"],
+      "@pages/*": ["page-objects/pages/*"],
+      "@modals/*": ["page-objects/modals/*"],
+      "@components/*": ["page-objects/components/*"]
     },
   },
   "include": [
