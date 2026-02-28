@@ -10,12 +10,11 @@
     "target": "ESNext",
     "module": "CommonJS",
     "paths": {
-      "@actions/*": ["helpers/actions/*"],
-      "@assertions/*": ["helpers/assertions/*"],
-      "@fixtures/*": ["fixtures/*"],
-      "@pages/*": ["page-objects/pages/*"],
-      "@modals/*": ["page-objects/modals/*"],
-      "@components/*": ["page-objects/components/*"]
+      "@actions/*": ["./helpers/actions/*"],
+      "@assertions/*": ["./helpers/assertions/*"],
+      "@fixtures/*": ["./fixtures/*"],
+      "@pages": ["./page-objects/pages/index.ts"],
+      "@modals": ["./page-objects/modals/index.ts"],
     },
   },
   "include": [

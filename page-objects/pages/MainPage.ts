@@ -1,20 +1,14 @@
 import { Locator, Page } from '@playwright/test';
 import BasePage from './BasePage';
-import SignUpModal from '../modals/SignUpModal';
-import LogInModal from '../modals/LogInModal';
+import { SignUpModal, LogInModal } from '@modals'
+import { HeaderPage, FooterPage } from '@pages';
+
 export default class MainPage extends BasePage {
     signUpModal: SignUpModal;
     logInModal: LogInModal;
-    headerSection: {
-        headerContainer: Locator,
-        headerLogo: Locator,
-        homeLink: Locator,
-        contactLink: Locator,
-        aboutUsLink: Locator,
-        cartLink: Locator,
-        logInLink: Locator,
-        signUpLink: Locator,
-    };
+    headerSection: HeaderPage;
+    footerSection: FooterPage;
+
     categoriesSection: {
         catContainer: Locator,
         phoneCategory: Locator,
@@ -32,30 +26,8 @@ export default class MainPage extends BasePage {
         previousButton: Locator,
         nextButton: Locator
     };
-    footerSection: {
-        footerContainer: Locator,
-        aboutUsDescription: Locator,
-        getInTouchDescription: Locator,
-        footerLogo: Locator,
-    };
 
     readonly baseLoactors = {
-        headerSection: {
-            headerContainer: this.page.locator('header'),
-            headerLogo: this.page.locator('header .logo'),
-            homeLink: this.page.locator('header .nav-bar .home'),
-            contactLink: this.page.locator('header .nav-bar .contact'),
-            aboutUsLink: this.page.locator('header .nav-bar .about'),
-            cartLink: this.page.locator('header .nav-bar .cart'),
-            logInLink: this.page.locator('header .nav-bar .login'),
-            signUpLink: this.page.locator('header .nav-bar .signup'),
-        },
-        footerSection: {
-            footerContainer: this.page.locator('footer'),
-            aboutUsDescription: this.page.locator('footer .about-us'),
-            getInTouchDescription: this.page.locator('footer .contact'),
-            footerLogo: this.page.locator('footer .privacy-policy'),
-        },
         categoriesSection: {
             catContainer: this.page.locator('.categories'),
             phoneCategory: this.page.locator('.categories .phone'),
@@ -82,25 +54,11 @@ export default class MainPage extends BasePage {
         this.signUpModal = new SignUpModal(page);
         this.logInModal = new LogInModal(page);
 
+        //Sections
+        this.headerSection = new HeaderPage(page);
+        this.footerSection = new FooterPage(page);
+
         //Locators per Section
-        this.headerSection = {
-            headerContainer: this.baseLoactors.headerSection.headerContainer,
-            headerLogo: this.baseLoactors.headerSection.headerLogo,
-            homeLink: this.baseLoactors.headerSection.homeLink,
-            contactLink: this.baseLoactors.headerSection.contactLink,
-            aboutUsLink: this.baseLoactors.headerSection.aboutUsLink,
-            cartLink: this.baseLoactors.headerSection.cartLink,
-            logInLink: this.baseLoactors.headerSection.logInLink,
-            signUpLink: this.baseLoactors.headerSection.signUpLink,
-        };
-
-        this.footerSection = {
-            footerContainer: this.baseLoactors.footerSection.footerContainer,
-            aboutUsDescription: this.baseLoactors.footerSection.aboutUsDescription,
-            getInTouchDescription: this.baseLoactors.footerSection.getInTouchDescription,
-            footerLogo: this.baseLoactors.footerSection.footerLogo,
-        };
-
         this.categoriesSection = {
             catContainer: this.baseLoactors.categoriesSection.catContainer,
             phoneCategory: this.baseLoactors.categoriesSection.phoneCategory,
@@ -121,11 +79,11 @@ export default class MainPage extends BasePage {
         };
     };
 
-    async clickNextButton() {
+    async clickNextPaginationButton() {
         await this.productGridSection.nextButton.click();
     };
 
-    async clickPreviousButton() {
+    async clickPreviousPaginationButton() {
         await this.productGridSection.previousButton.click();
     };
 
@@ -141,14 +99,5 @@ export default class MainPage extends BasePage {
                 await this.categoriesSection.monitorCategory.click();
                 break;
         }
-    };
-
-    async signIn() {
-        await this.headerSection.logInLink.click();
-        //call to s
-    };
-
-    async signUp() {
-        await this.headerSection.signUpLink.click();
     };
 }

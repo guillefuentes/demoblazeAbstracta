@@ -43,4 +43,8 @@ export default abstract class BasePage {
     async getElementAttribute(locator: Locator, attributeName: string): Promise<string | null> {
         return await locator.getAttribute(attributeName);
     };
+
+    protected getLocatorFromSelector(selector: string): Locator {
+        return this.page.locator(selector);
+    }
 }
