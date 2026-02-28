@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Demo Repository for Demoblaze website used for Abstracta's technical interview (02/2026)",
   "main": "index.js",
-  "scripts": {},
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/guillefuentes/demoblazeAbstracta.git"
@@ -17,6 +17,10 @@
   "homepage": "https://github.com/guillefuentes/demoblazeAbstracta#readme",
   "devDependencies": {
     "@playwright/test": "^1.58.2",
-    "@types/node": "^25.3.2"
+    "@types/node": "^25.3.2",
+    "tsconfig-paths": "^4.2.0"
+  },
+  "dependencies": {
+    "typescript": "^5.9.3"
   }
 }

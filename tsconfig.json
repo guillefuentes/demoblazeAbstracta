@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "pretty": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "target": "ESNext",
+    "module": "CommonJS",
+    "paths": {
+      "@poms": ["./page-objects/pages/index.ts"],
+    },
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "./node_modules",
+    "./test-results",
+    "./playwright-report",
+  ]
+}
