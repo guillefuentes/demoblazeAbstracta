@@ -36,18 +36,31 @@ jobs:
         
         # Extract test results from JSON output
         if [ -f "test-results.json" ]; then
+          echo "Found test-results.json, parsing..."
           # Count tests by their result status
-          PASSED=$(cat test-results.json | jq '[.. | .results? | select(. != null) | .[] | select(.status == "passed")] | length')
-          FAILED=$(cat test-results.json | jq '[.. | .results? | select(. != null) | .[] | select(.status == "failed")] | length')
-          SKIPPED=$(cat test-results.json | jq '[.. | .results? | select(. != null) | .[] | select(.status == "skipped")] | length')
-          TOTAL=$((PASSED + FAILED + SKIPPED))
-        else
+          PASSED=$(jq '[.. | .results? | select(. != null) | .[] | select(.status == "passed")] | length' test-results.json 2>/dev/null || echo "0")
+          FAILED=$(jq '[.. | .results? | select(. != null) | .[] | select(.status == "failed")] | length' test-results.json 2>/dev/null || echo "0")
+          SKIPPED=$(jq '[.. | .results? | select(. != null) | .[] | select(.status == "skipped")] | length' test-results.json 2>/dev/null || echo "0")
+        elif [ -f "test-output.log" ]; then
+          echo "Found test-output.log, parsing..."
           # Fallback to parsing log output
-          TOTAL=$(grep -oP '\d+(?= (passed|failed))' test-output.log | head -1 || echo "0")
-          PASSED=$(grep -oP '\d+(?= passed)' test-output.log | head -1 || echo "0")
-          FAILED=$(grep -oP '\d+(?= failed)' test-output.log | head -1 || echo "0")
-          SKIPPED=$(grep -oP '\d+(?= skipped)' test-output.log | head -1 || echo "0")
+          PASSED=$(grep -oE '[0-9]+ passed' test-output.log 2>/dev/null | grep -oE '[0-9]+' | head -1 || echo "0")
+          FAILED=$(grep -oE '[0-9]+ failed' test-output.log 2>/dev/null | grep -oE '[0-9]+' | head -1 || echo "0")
+          SKIPPED=$(grep -oE '[0-9]+ skipped' test-output.log 2>/dev/null | grep -oE '[0-9]+' | head -1 || echo "0")
+        else
+          echo "No test results found, using defaults"
+          PASSED="0"
+          FAILED="0"
+          SKIPPED="0"
         fi
+        
+        # Ensure variables have values (in case parsing failed)
+        PASSED="${PASSED:-0}"
+        FAILED="${FAILED:-0}"
+        SKIPPED="${SKIPPED:-0}"
+        TOTAL=$((PASSED + FAILED + SKIPPED))
+        
+        echo "Results: PASSED=$PASSED, FAILED=$FAILED, SKIPPED=$SKIPPED, TOTAL=$TOTAL"
         
         # Overall status
         if [ "$FAILED" -gt 0 ]; then
@@ -60,7 +73,7 @@ jobs:
         # Summary table (horizontal format)
         echo "| ✅ Passed | ❌ Failed | ⏭️ Skipped | 📊 Total |" >> $GITHUB_STEP_SUMMARY
         echo "|-----------|-----------|------------|----------|" >> $GITHUB_STEP_SUMMARY
-        echo "| $PASSED | $FAILED | $SKIPPED | $TOTAL |" >> $GITHUB_STEP_SUMMARY
+        echo "| ${PASSED} | ${FAILED} | ${SKIPPED} | ${TOTAL} |" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         
         # Test coverage
@@ -86,8 +99,8 @@ jobs:
         echo "## 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "- 📊 [HTML Report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
-        echo "- � Product data JSON files (BLZ_001 output)" >> $GITHUB_STEP_SUMMARY
-        echo "- �📸 Screenshots and videos available in artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "- 📦 Product data JSON files (BLZ_001 output)" >> $GITHUB_STEP_SUMMARY
+        echo "- 📸 Screenshots and videos available in artifacts" >> $GITHUB_STEP_SUMMARY
     
     - name: Upload Playwright Report
       uses: actions/upload-artifact@v4
