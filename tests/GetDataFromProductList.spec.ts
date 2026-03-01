@@ -16,6 +16,7 @@ test.describe(`Demoblaze Store - Mandatory Test #1`, { tag: ['@BLZ_001', '@PRODU
             await test.step('Verify the page URL and title', async () => {
                 await assert.pageURLContains(testData.baseURL);
                 await assert.pageTitleIs('STORE');
+                await assert.elementIsVisible(mainPage.carrouselContainer);
             });
         });
 

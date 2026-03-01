@@ -20,7 +20,7 @@ export default class PlaceOrderModal extends BasePage {
     successMessageOKButton: Locator;
     successMessageDetails: Locator;
 
-    readonly placeOrderLocators = {
+    private placeOrderLocators = {
         modalIdentifier: this.page.locator('.modal-content').filter({ hasText: 'Place order' }),
         topCloseButton: this.page.getByRole('button', { name: 'Close' }).first(),
         name: this.page.locator('#name'),

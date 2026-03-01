@@ -11,15 +11,12 @@ export default class ProductPage extends BasePage {
     headerSection: HeaderPage;
     footerSection: FooterPage;
 
-    pageIdentifier: Locator;
-
     productTitle: Locator;
     productPrice: Locator;
     productDescription: Locator;
     addToCartButton: Locator;
 
-    readonly productLocators = {
-        pageIdentifier: this.page.locator('.product-content'),
+    private productLocators = {
         productTitle: this.page.locator('.name'),
         productPrice: this.page.locator('.price-container'),
         productDescription: this.page.locator('#myTabContent'),
@@ -37,8 +34,6 @@ export default class ProductPage extends BasePage {
         //Sections
         this.headerSection = new HeaderPage(page);
         this.footerSection = new FooterPage(page);
-
-        this.pageIdentifier = this.productLocators.pageIdentifier;
 
         this.productTitle = this.productLocators.productTitle;
         this.productPrice = this.productLocators.productPrice;

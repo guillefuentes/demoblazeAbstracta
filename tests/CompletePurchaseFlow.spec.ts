@@ -9,6 +9,7 @@ test.describe(`Demoblaze Store - Mandatory Test #2`, { tag: ['@BLZ_002', '@ORDER
             await test.step('Verify the page URL and title', async () => {
                 await assert.pageURLContains(testData.baseURL);
                 await assert.pageTitleIs('STORE');
+                await assert.elementIsVisible(mainPage.carrouselContainer);
             });
         });
 
@@ -19,6 +20,7 @@ test.describe(`Demoblaze Store - Mandatory Test #2`, { tag: ['@BLZ_002', '@ORDER
             await test.step('Verify the page URL and title', async () => {
                 await assert.pageURLContains('prod.html');
                 await assert.pageTitleIs('STORE');
+                await assert.elementIsVisible(productPage.addToCartButton);
             });
 
             await test.step('Verify the product details page is displayed', async () => {
@@ -56,6 +58,7 @@ test.describe(`Demoblaze Store - Mandatory Test #2`, { tag: ['@BLZ_002', '@ORDER
             await test.step('Verify the page URL and title', async () => {
                 await assert.pageURLContains('cart.html');
                 await assert.pageTitleIs('STORE');
+                await assert.elementIsVisible(cartPage.inCartProducts.cartTable);
             });
         });
 

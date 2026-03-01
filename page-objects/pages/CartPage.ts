@@ -11,8 +11,6 @@ export default class CartPage extends BasePage {
     headerSection: HeaderPage;
     footerSection: FooterPage;
 
-    pageIdentifier: Locator;
-
     inCartProducts: {
         cartTable: Locator,
         productName: Locator,
@@ -23,8 +21,7 @@ export default class CartPage extends BasePage {
     totalPrice: Locator;
     placeOrderButton: Locator;
 
-    readonly cartLocators = {
-        pageIdentifier: this.page.locator('#page-wrapper'),
+    private cartLocators = {
         inCartProducts: {
             cartTable: this.page.locator('.table-responsive'),
             productName: this.page.locator('#tbodyid > tr > td:nth-child(2)'),
@@ -46,8 +43,6 @@ export default class CartPage extends BasePage {
         //Sections
         this.headerSection = new HeaderPage(page);
         this.footerSection = new FooterPage(page);
-
-        this.pageIdentifier = this.cartLocators.pageIdentifier;
 
         this.inCartProducts = {
             cartTable: this.cartLocators.inCartProducts.cartTable,

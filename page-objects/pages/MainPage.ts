@@ -30,7 +30,7 @@ export default class MainPage extends BasePage {
         nextButton: Locator
     };
 
-    readonly baseLoactors = {
+    private baseLoactors = {
         carrouselContainer: this.page.locator('#contcar'),
         carrouselPreviousButton: this.page.locator('#contcar').getByRole('button', { name: 'Previous' }),
         carrouselNextButton: this.page.locator('#contcar').getByRole('button', { name: 'Next' }),
@@ -121,4 +121,16 @@ export default class MainPage extends BasePage {
     async clickCarrouselPrevious() {
         await this.actions.mouse.click(this.carrouselPreviousButton);
     };
-}
+
+    async openProductDetailsPage(options: { productName?: string, productIndex?: number }) {
+        const productLinkByName = this.productGridSection.productCard.productLink.filter({ hasText: options.productName }).first();
+        const productLinkByIndex = this.productGridSection.productCard.productLink.nth(options.productIndex ?? 0);
+
+        if (options.productName && options.productIndex !== undefined) throw new Error('Provide either productName or productIndex, not both');
+
+        if (options.productName) await this.actions.mouse.click(productLinkByName);
+        else if (options.productIndex !== undefined) await this.actions.mouse.click(productLinkByIndex);
+
+        else throw new Error('Either productName or productIndex must be provided');
+    };
+};

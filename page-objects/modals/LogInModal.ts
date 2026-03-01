@@ -9,7 +9,7 @@ export default class LogInModal extends BasePage {
     loginButton : Locator;
     closeButton : Locator;
 
-    readonly logInLocators = {
+    private logInLocators = {
         modalIdentifier: this.page.locator('.modal-content').filter({ hasText: 'Log in' }),
         usernameField: this.page.locator('#loginusername'),
         passwordField: this.page.locator('#loginpassword'),
@@ -21,10 +21,19 @@ export default class LogInModal extends BasePage {
         super(page);
 
         this.modalIdentifier = this.logInLocators.modalIdentifier;
+        this.usernameField = this.logInLocators.usernameField;
+        this.passwordField = this.logInLocators.passwordField;
+        this.loginButton = this.logInLocators.loginButton;
+        this.closeButton = this.logInLocators.closeButton;
     };
 
     async logIn(username: string, password: string): Promise<void> {
-        await this.actions.keyboard.fillField(this.logInLocators.usernameField, username);
-        await this.actions.keyboard.fillField(this.logInLocators.passwordField, password);
+        await this.actions.keyboard.fillField(this.usernameField, username);
+        await this.actions.keyboard.fillField(this.passwordField, password);
+        await this.actions.mouse.click(this.loginButton);
     };
+
+    async closeModal(): Promise<void> {
+        await this.actions.mouse.click(this.closeButton);
+    }
 };

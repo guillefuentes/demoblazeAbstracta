@@ -8,7 +8,7 @@ export default class FooterPage extends BasePage {
     getInTouchDescription: Locator;
     footerLogo: Locator;
 
-    readonly footerLocators = {
+    private footerLocators = {
         footerContainer: this.page.locator('footer'),
         aboutUsDescription: this.page.locator('footer .about-us'),
         getInTouchDescription: this.page.locator('footer .contact'),
