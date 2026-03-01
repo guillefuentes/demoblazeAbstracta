@@ -51,12 +51,9 @@
 
 ## ✅ All Tests Passed (or ❌ Tests Failed)
 
-| Metric    | Count |
-|-----------|-------|
-| ✅ Passed  | 3     |
-| ❌ Failed  | 1     |
-| ⏭️ Skipped | 0     |
-| 📊 Total   | 4     |
+| ✅ Passed | ❌ Failed | ⏭️ Skipped | 📊 Total |
+|-----------|-----------|------------|----------|
+| 3         | 1         | 0          | 4        |
 
 ## 📋 Test Coverage
 - @BLZ_001: Product list extraction...
