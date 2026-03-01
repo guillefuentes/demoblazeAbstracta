@@ -6,14 +6,14 @@ import { HeaderPage, FooterPage } from '@pages';
 export default class CartPage extends BasePage {
     signUpModal: SignUpModal;
     logInModal: LogInModal;
-    placeOrder: PlaceOrderModal;
+    placeOrderModal: PlaceOrderModal;
 
     headerSection: HeaderPage;
     footerSection: FooterPage;
 
     pageIdentifier: Locator;
 
-    productsInCartSection: {
+    inCartProducts: {
         cartTable: Locator,
         productName: Locator,
         productPrice: Locator
@@ -24,6 +24,15 @@ export default class CartPage extends BasePage {
     placeOrderButton: Locator;
 
     readonly cartLocators = {
+        pageIdentifier: this.page.locator('#page-wrapper'),
+        inCartProducts: {
+            cartTable: this.page.locator('.table-responsive'),
+            productName: this.page.locator('#tbodyid > tr > td:nth-child(2)'),
+            productPrice: this.page.locator('#tbodyid > tr > td:nth-child(3)'),
+            deleteProductLink: this.page.getByRole('link', { name: 'Delete' })
+        },
+        totalPrice: this.page.locator('#totalp'),
+        placeOrderButton: this.page.getByRole('button', { name: 'Place Order' }),
     }
 
     constructor(page: Page) {
@@ -32,11 +41,22 @@ export default class CartPage extends BasePage {
         //Modals
         this.signUpModal = new SignUpModal(page);
         this.logInModal = new LogInModal(page);
-        this.placeOrder = new PlaceOrderModal(page);
+        this.placeOrderModal = new PlaceOrderModal(page);
 
         //Sections
         this.headerSection = new HeaderPage(page);
         this.footerSection = new FooterPage(page);
 
+        this.pageIdentifier = this.cartLocators.pageIdentifier;
+
+        this.inCartProducts = {
+            cartTable: this.cartLocators.inCartProducts.cartTable,
+            productName: this.cartLocators.inCartProducts.productName,
+            productPrice: this.cartLocators.inCartProducts.productPrice,
+            deleteProductButton: this.cartLocators.inCartProducts.deleteProductLink,
+        };
+
+        this.totalPrice = this.cartLocators.totalPrice;
+        this.placeOrderButton = this.cartLocators.placeOrderButton;
     };
 }

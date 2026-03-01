@@ -97,7 +97,7 @@ export default class Assert {
 
             if (accept) await dialog.accept();
         });
-    }
+    };
 
     async promptMessageIs(expectedMessage: string, inputText: string | null = null): Promise<void> {
         this.page.once('dialog', async dialog => {
@@ -106,5 +106,51 @@ export default class Assert {
 
             if (inputText !== null) await dialog.accept(inputText);
         });
+    };
+
+    //Numeric Assertions
+    async valueIsEqualOrGreaterThan(actual: number, threshold: number): Promise<void> {
+        expect(actual).toBeGreaterThanOrEqual(threshold);
+    };
+
+    async valueIsEqualOrLessThan(actual: number, threshold: number): Promise<void> {
+        expect(actual).toBeLessThanOrEqual(threshold);
+    };
+
+    async valueIsBetween(actual: number, min: number, max: number): Promise<void> {
+        const isInsideRange = actual >= min && actual <= max;
+
+        expect(isInsideRange).toBeTruthy();
+    };
+
+    async valueIsNotBetween(actual: number, min: number, max: number): Promise<void> {
+        const isOutsideRange = actual < min || actual > max;
+
+        expect(isOutsideRange).toBeTruthy();
     }
+
+    async valueIs(actual: number, expected: number): Promise<void> {
+        expect(actual).toBe(expected);
+    };
+
+    async valueIsNot(actual: number, expected: number): Promise<void> {
+        expect(actual).not.toBe(expected);
+    };
+
+    //Text Assertions
+    async textIs(actual: string, expected: string): Promise<void> {
+        expect(actual).toBe(expected);
+    };
+
+    async textIsNot(actual: string, expected: string): Promise<void> {
+        expect(actual).not.toBe(expected);
+    };
+
+    async textContains(actual: string, expectedSubstring: string): Promise<void> {
+        expect(actual).toContain(expectedSubstring);
+    };
+
+    async textNotContains(actual: string, expectedSubstring: string): Promise<void> {
+        expect(actual).not.toContain(expectedSubstring);
+    };
 }
