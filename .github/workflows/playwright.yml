@@ -25,7 +25,7 @@ jobs:
       id: playwright-tests
       continue-on-error: true
       run: |
-        npx playwright test --reporter=html,json 2>&1 | tee test-output.log
+        npx playwright test 2>&1 | tee test-output.log
         echo "test_exit_code=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
     
     - name: Generate Test Summary
