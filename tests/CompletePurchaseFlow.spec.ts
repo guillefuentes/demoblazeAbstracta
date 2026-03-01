@@ -1,7 +1,7 @@
-import { test } from '../fixtures/pageManager';
+import { test } from '@fixtures/pageManager';
 import * as testData from '@test-data/testData';
 
-test.describe(`Demoblaze Store - Mandatory Test #2`, { tag: ['@BLZ_002', '@ORDERS', '@E2E'] }, () => {
+test.describe(`Demoblaze Store - Mandatory Test #2`, { tag: ['@BLZ_002', '@BLAZEDEMO', '@ORDERS', '@E2E'] }, () => {
     test('Add Product to Cart and Place Order', async ({ actions, assert, mainPage, productPage, cartPage }) => {
         await test.step('Navigate to homepage', async () => {
             await mainPage.navigateTo(testData.baseURL);

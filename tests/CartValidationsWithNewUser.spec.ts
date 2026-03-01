@@ -1,4 +1,4 @@
-import { test } from '../fixtures/pageManager';
+import { test } from '@fixtures/pageManager';
 
 import * as testData from '@test-data/testData';
 
@@ -8,7 +8,7 @@ const uniquePassword = `pass_${uniqueDate}`;
 
 let guestProductName : string;
 
-test.describe(`Demoblaze Store - Additional Test #1`, { tag: ['@BLZ_003', '@ACCOUNT'] }, () => {
+test.describe(`Demoblaze Store - Additional Test #1`, { tag: ['@BLZ_003', '@BLAZEDEMO', '@ACCOUNT'] }, () => {
     test('Validate User-scoped Cart with New User', async ({ actions, assert, mainPage, productPage, cartPage }) => {
         await test.step('Navigate to homepage', async () => {
             await mainPage.navigateTo(testData.baseURL);

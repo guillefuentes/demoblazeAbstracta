@@ -1,4 +1,4 @@
-import { test } from '../fixtures/pageManager';
+import { test } from '@fixtures/pageManager';
 import ProductInformation from '@interface/ProductInformation';
 
 import * as writeJSONfile from 'fs';
@@ -8,7 +8,7 @@ import * as testData from '@test-data/testData';
 const currentDate = new Date().toISOString().split('T')[0];
 const outputFilePath = `./output/ProductDetails_${currentDate}.json`;
 
-test.describe(`Demoblaze Store - Mandatory Test #1`, { tag: ['@BLZ_001', '@PRODUCT_DATA'] }, () => {
+test.describe(`Demoblaze Store - Mandatory Test #1`, { tag: ['@BLZ_001', '@BLAZEDEMO', '@PRODUCT_DATA'] }, () => {
     test('get Data From Product List', async ({ actions, assert, mainPage }, testInfo) => {
         await test.step('Navigate to homepage', async () => {
             await mainPage.navigateTo(testData.baseURL);

@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
-import MouseActions from './MouseActions';
-import KeyboardActions from './KeyboardActions';
-import { BrowserActions } from './BrowserActions';
+import MouseActions from '@actions/MouseActions';
+import KeyboardActions from '@actions/KeyboardActions';
+import { BrowserActions } from '@actions/BrowserActions';
 
 class AllActions {
     mouse: MouseActions;

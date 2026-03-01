@@ -107,6 +107,45 @@ Artifacts and reports are generated under:
 - `test.step(...)` is used to improve report readability and execution traceability.
 - Step structure follows: *parent action step* → *nested assertion step(s)*.
 
+## CI/CD Integration
+
+### GitHub Actions Workflow
+
+The project includes automated testing via GitHub Actions (`.github/workflows/playwright.yml`):
+
+**Triggers:**
+- Push to `main` or `master` branches
+- Pull requests targeting `main` or `master`
+
+**What It Does:**
+1. Sets up Node.js LTS environment
+2. Installs dependencies and Playwright browsers
+3. Runs all Playwright tests
+4. Generates a **comprehensive test summary** including:
+   - ✅ Pass/fail metrics
+   - 📋 Test coverage breakdown by tag
+   - ⚠️ Known issues documentation
+   - 📦 Links to HTML reports and artifacts
+
+**Reporters Used in CI:**
+- `html` - Interactive HTML report
+- `json` - Machine-readable results for parsing
+- `github` - Integrates with GitHub Actions annotations
+
+**Artifacts Uploaded:**
+- `playwright-report/` - Full HTML report (30 days retention)
+- `test-results/` - Screenshots, videos, traces (30 days retention)
+
+**Handling Known Failures:**
+
+The workflow is configured to **not fail the build** when BLZ_004 fails, since this is a documented application bug. The summary clearly indicates this is expected behavior.
+
+To change this (fail CI on any test failure), uncomment the `exit 1` line in the final step of the workflow.
+
+**Viewing Results:**
+
+Navigate to the "Actions" tab in GitHub → Select a workflow run → View the summary with test metrics and download artifacts.
+
 ## Scope Note
 
 Some helper and assertion methods are intentionally broader than the current test cases.

@@ -1,9 +1,9 @@
 import { Locator } from '@playwright/test';
-import { test } from '../fixtures/pageManager';
-import * as testData from '../test-data/testData';
+import { test } from '@fixtures/pageManager';
+import * as testData from '@test-data/testData';
 import * as helpers from '@helpers/productHelpers';
 
-test.describe('Demoblaze Store - Additional Test #2', { tag: ['@BLZ_004'] }, () => {
+test.describe('Demoblaze Store - Additional Test #2', { tag: ['@BLZ_004', '@BLAZEDEMO'] }, () => {
     test('Validate Main Page Navigation and Pagination', async ({ actions, assert, mainPage }) => {
 
         //Common Use for Category and Pagination Validations

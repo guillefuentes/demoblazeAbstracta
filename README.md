@@ -55,6 +55,32 @@ Open the last HTML report:
 npx playwright show-report
 ```
 
+## Code Quality
+
+Check code follows import conventions (path aliases over relative imports):
+
+```bash
+npm run lint
+```
+
+Auto-fix linting issues:
+
+```bash
+npm run lint:fix
+```
+
+## CI/CD
+
+This project uses **GitHub Actions** for continuous integration:
+
+- ✅ Runs on every `push` and `pull_request` to `main`/`master`
+- 🎭 Executes all Playwright tests across browsers
+- 📊 Generates detailed test summary in Actions tab
+- 📦 Uploads HTML reports and test results as artifacts
+- ⚠️ Handles known failing test (BLZ_004) gracefully
+
+**View test results:** Check the "Actions" tab in GitHub to see test summaries with pass/fail metrics.
+
 ## Notes
 
 - `.env` is not required in the current setup.

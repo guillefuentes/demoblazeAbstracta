@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test'
-import Assertions from '../helpers/assert/Assertions';
-import AllActions from '../helpers/actions/AllActions';
+import Assertions from '@helpers/assert/Assertions';
+import AllActions from '@helpers/actions/AllActions';
 
 type AssertFixture = {
     assert: Assertions;
