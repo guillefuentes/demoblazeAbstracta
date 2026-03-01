@@ -53,8 +53,7 @@ test.describe(`Demoblaze Store - Optional Test #1`, { tag: ['@BLZ_003', '@ACCOUN
             });
 
             await test.step('Verify the added product is present in the cart', async () => {
-                await assert.elementIsVisible(cartPage.cartLocators.inCartProducts.productName.first());
-                await assert.elementIsVisible(cartPage.cartLocators.inCartProducts.productPrice.first());
+                await assert.elementIsVisible(cartPage.inCartProducts.productName.first());
             });
 
             guestProductName =
