@@ -58,4 +58,5 @@ npx playwright show-report
 ## Notes
 
 - `.env` is not required in the current setup.
-- Current tests target `https://www.demoblaze.com/`.
+- All tests target `https://www.demoblaze.com/`.
+- **Known Failing Test:** `@BLZ_004` currently fails due to a pagination bug in the application (see [TESTING_GUIDE.md](TESTING_GUIDE.md#known-issues--failing-tests) for details). This demonstrates the framework's ability to detect real bugs.

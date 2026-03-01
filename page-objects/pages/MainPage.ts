@@ -9,6 +9,7 @@ export default class MainPage extends BasePage {
     footerSection: FooterPage;
 
     carrouselContainer: Locator;
+    activeCarrouselItem: Locator;
     carrouselPreviousButton: Locator;
     carrouselNextButton: Locator;
     categoriesSection: {
@@ -32,6 +33,7 @@ export default class MainPage extends BasePage {
 
     private baseLoactors = {
         carrouselContainer: this.page.locator('#contcar'),
+        activeCarrouselItem: this.page.locator('#contcar .carousel-item.active'),
         carrouselPreviousButton: this.page.locator('#contcar').getByRole('button', { name: 'Previous' }),
         carrouselNextButton: this.page.locator('#contcar').getByRole('button', { name: 'Next' }),
         categoriesSection: {
@@ -49,7 +51,7 @@ export default class MainPage extends BasePage {
                 productLink: this.page.locator('.card-title a'),
                 productDescription: this.page.locator('#article'),
             },
-            previousButton: this.page.getByRole('button', { name: 'Previous' }),
+            previousButton: this.page.locator('.pagination').getByRole('button', { name: 'Previous' }),
             nextButton: this.page.locator('.pagination').getByRole('button', { name: 'Next' })
         },
     };
@@ -68,6 +70,7 @@ export default class MainPage extends BasePage {
 
         //Locators per Section
         this.carrouselContainer = this.baseLoactors.carrouselContainer;
+        this.activeCarrouselItem = this.baseLoactors.activeCarrouselItem;
         this.carrouselPreviousButton = this.baseLoactors.carrouselPreviousButton;
         this.carrouselNextButton = this.baseLoactors.carrouselNextButton;
 
@@ -116,10 +119,12 @@ export default class MainPage extends BasePage {
 
     async clickCarrouselNext() {
         await this.actions.mouse.click(this.carrouselNextButton);
+        await this.actions.browser.waitUntilTimeout(2);
     };
 
     async clickCarrouselPrevious() {
         await this.actions.mouse.click(this.carrouselPreviousButton);
+        await this.actions.browser.waitUntilTimeout(2);
     };
 
     async openProductDetailsPage(options: { productName?: string, productIndex?: number }) {

@@ -6,6 +6,8 @@ This project contains Playwright end-to-end tests for the Demoblaze store using 
 Current test coverage:
 - `@BLZ_001` Product list extraction and JSON output generation
 - `@BLZ_002` Complete purchase flow (add to cart, cart validation, place order)
+- `@BLZ_003` Cart validations with new user registration
+- `@BLZ_004` Main page navigation and pagination (⚠️ **Currently failing - see Known Issues**)
 
 ## Current Environment Setup
 
@@ -36,17 +38,37 @@ npx playwright test -g @BLZ_002 --project=chromium
 npx playwright show-report
 ```
 
-## Base URL Behavior (Important)
+## Known Issues & Failing Tests
 
-At the moment, tests use hardcoded base URLs inside the spec files:
-- `tests/GetDataFromProductList.spec.ts`
-- `tests/CompletePurchaseFlow.spec.ts`
+### BLZ_004: Pagination Navigation Bug
 
-Current value used in tests:
-- `https://www.demoblaze.com/`
+**Status:** ❌ Test failing due to application bug  
+**Test:** `tests/MainPageNavigationAndPagination.spec.ts`  
+**Location:** Pagination validation - "Navigate back to previous page"
 
-`.env` is **not required** and is currently **not part of the active setup**.
-If environment-based configuration is reintroduced later, document it here and in `playwright.config.ts`.
+**Bug Description:**
+When navigating pagination (Next → Previous), the application doesn't correctly restore the previous page's product list.
+
+**Expected Behavior:**
+1. User is on page 1 viewing products (e.g., "Nokia lumia 1520", "Nexus 6", etc.)
+2. User clicks "Next" → Shows page 2 products
+3. User clicks "Previous" → Should show original page 1 products
+
+**Actual Behavior:**
+Step 3 shows **different products** than the original page 1 (e.g., "Apple monitor 24" instead of "Nokia lumia 1520")
+
+**Test Evidence:**
+```typescript
+// Line 143 in MainPageNavigationAndPagination.spec.ts
+Expected: "Nokia lumia 1520"
+Received: "Apple monitor 24"
+```
+
+**Why This Test Remains:**
+- ✅ Demonstrates the test framework successfully catches real bugs
+- ✅ Documents known application issues for stakeholders
+- ✅ Will automatically pass once the bug is fixed
+- ✅ Prevents regression if the bug gets fixed then reintroduced
 
 ## Test Artifacts on Failure
 
@@ -80,7 +102,7 @@ Artifacts and reports are generated under:
 - Interfaces (for example `interface/ProductInformation.ts`) are used to keep extracted or shared test data strongly typed.
 - Assertions are centralized in `helpers/assert/Assertions.ts` to keep checks reusable.
 - Interaction logic is delegated to actions/page objects to keep specs readable.
-- Tests are tagged (for example `@BLZ_001`, `@BLZ_002`) for targeted execution.
+- Tests are tagged (for example `@BLZ_001`, `@BLZ_002`) for targeted execution and feature identification.
 - Stable page-object selectors are preferred over ad-hoc selectors in specs.
 - `test.step(...)` is used to improve report readability and execution traceability.
 - Step structure follows: *parent action step* → *nested assertion step(s)*.

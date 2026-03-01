@@ -1,8 +1,9 @@
 import { test } from '@playwright/test';
 import { MainPage } from '@pages';
 import ProductInformation from '@interface/ProductInformation';
+import Assert from '@helpers/assert/Assertions';
+import * as testData from '@test-data/testData';
 
-const baseURL = process.env.BASE_URL || 'https://www.demoblaze.com/';
 
 export async function extractProductInformation(mainPage: MainPage, productList: ProductInformation[]): Promise<ProductInformation[]> {
     //Simplified locators for Card elements
@@ -23,7 +24,7 @@ export async function extractProductInformation(mainPage: MainPage, productList:
                 productList.push({
                     productTitle: productName,
                     productPrice: Number(productPrice.replace('$', '')),
-                    productLink: baseURL + productLink,
+                    productLink: testData.baseURL + productLink,
                     productDescription: productDescription
                 });
             });
@@ -31,4 +32,25 @@ export async function extractProductInformation(mainPage: MainPage, productList:
     };
 
     return productList;
+}
+
+export async function applyFilterAndWaitForLoad(assert: Assert, mainPage: MainPage, category: 'phone' | 'laptop' | 'monitor') {
+    await test.step(`Filter by Category: ${category}`, async () => {
+        await mainPage.clickCategory(category);
+
+            await test.step(`Verify the page has loaded products by category`, async () => {
+                const response =
+                    await test.step(`Wait for API Response Status`, async () => {
+                        return await mainPage.page.waitForResponse(response => response.url().includes('bycat'));
+                    });
+
+            await test.step(`verify Response Status Code is OK`, async () => {
+                await assert.responseStatusIsOK(response);
+            });
+
+            await test.step(`verify Product Card List shows at least one product`, async () => {
+                await assert.elementIsVisible(mainPage.productGridSection.productCard.container.first());
+            });
+        });
+    });
 }
