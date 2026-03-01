@@ -59,4 +59,8 @@ export default class CartPage extends BasePage {
         this.totalPrice = this.cartLocators.totalPrice;
         this.placeOrderButton = this.cartLocators.placeOrderButton;
     };
+
+    async placeOrder(): Promise<void> {
+        await this.actions.mouse.click(this.placeOrderButton);
+    }
 }

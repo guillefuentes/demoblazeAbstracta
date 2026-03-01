@@ -1,10 +1,13 @@
 import { Page, Locator } from '@playwright/test';
+import AllActions from '@helpers/actions/AllActions';
 
 export default abstract class BasePage {
     page: Page;
+    actions: AllActions;
 
     constructor(page: Page) {
         this.page = page;
+        this.actions = new AllActions(page);
     }
 
     // Common navigation methods for all pages

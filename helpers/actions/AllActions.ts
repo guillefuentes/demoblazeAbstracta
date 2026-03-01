@@ -8,11 +8,11 @@ class AllActions {
     keyboard: KeyboardActions;
     browser: BrowserActions;
 
-    constructor(page: Page) {
+    constructor(protected page: Page) {
         this.mouse = new MouseActions(page);
         this.keyboard = new KeyboardActions(page);
         this.browser = new BrowserActions(page);
-    }
+    };
 }
 
 export default AllActions;

@@ -20,6 +20,10 @@ export default class Assert {
         await expect(locator).toBeDisabled();
     };
 
+    async elementCountIs(locator: Locator, expectedCount: number): Promise<void> {
+        await expect(locator).toHaveCount(expectedCount);
+    };
+
     //Element Content Assertions
     async elementHasText(locator: Locator): Promise<void> {
         await expect(locator).not.toHaveText('');
@@ -83,30 +87,35 @@ export default class Assert {
     }
 
     //JavaScript Dialog Assertions
-    async alertMessageIs(expectedMessage: string): Promise<void> {
-        this.page.once('dialog', async dialog => {
-            expect(dialog.type()).toBe('alert');
-            expect(dialog.message()).toBe(expectedMessage);
-        });
+
+    async alertMessageIs(expectedMessage: string, delaySeconds: number = 1): Promise<void> {
+        const dialog = await this.page.waitForEvent('dialog', { timeout: 5000 });
+        expect(dialog.type()).toBe('alert');
+        expect(dialog.message()).toBe(expectedMessage);
+
+        await this.page.waitForTimeout(delaySeconds * 1000);
+        await dialog.accept();
     }
 
-    async confirmMessageIs(expectedMessage: string, accept: boolean = true): Promise<void> {
-        this.page.once('dialog', async dialog => {
-            expect(dialog.type()).toBe('confirm');
-            expect(dialog.message()).toBe(expectedMessage);
+    async confirmMessageIs(expectedMessage: string, accept: boolean = true, delaySeconds: number = 1): Promise<void> {
+        const dialog = await this.page.waitForEvent('dialog', { timeout: 5000 });
+        expect(dialog.type()).toBe('confirm');
+        expect(dialog.message()).toBe(expectedMessage);
 
-            if (accept) await dialog.accept();
-        });
-    };
+        await this.page.waitForTimeout(delaySeconds * 1000);
+        if (accept) await dialog.accept();
+        else await dialog.dismiss();
+    }
 
-    async promptMessageIs(expectedMessage: string, inputText: string | null = null): Promise<void> {
-        this.page.once('dialog', async dialog => {
-            expect(dialog.type()).toBe('prompt');
-            expect(dialog.message()).toBe(expectedMessage);
+    async promptMessageIs(expectedMessage: string, inputText: string | null = null, delaySeconds: number = 1): Promise<void> {
+        const dialog = await this.page.waitForEvent('dialog', { timeout: 5000 });
+        expect(dialog.type()).toBe('prompt');
+        expect(dialog.message()).toBe(expectedMessage);
 
-            if (inputText !== null) await dialog.accept(inputText);
-        });
-    };
+        await this.page.waitForTimeout(delaySeconds * 1000);
+        if (inputText !== null) await dialog.accept(inputText);
+        else await dialog.dismiss();
+    }
 
     //Numeric Assertions
     async valueIsEqualOrGreaterThan(actual: number, threshold: number): Promise<void> {

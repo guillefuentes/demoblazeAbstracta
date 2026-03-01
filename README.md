@@ -5,7 +5,9 @@ Demo Repository for Demoblaze website used for Abstracta's technical interview (
 
 ## Getting Started
 
-Follow these steps to set up and run all tests in this project:
+**📖 For complete documentation on test architecture, conventions, and patterns, see [TESTING_GUIDE.md](TESTING_GUIDE.md)**
+
+Follow these steps to set up and run tests quickly:
 
 ### 1. Prerequisites
 
@@ -31,3 +33,29 @@ npx playwright install
 ```
 
 For more details, see the Playwright documentation: https://playwright.dev/
+
+## Run Tests
+
+Run all tests:
+
+```bash
+npx playwright test
+```
+
+Run by tag (Chromium):
+
+```bash
+npx playwright test -g @BLZ_001 --project=chromium
+npx playwright test -g @BLZ_002 --project=chromium
+```
+
+Open the last HTML report:
+
+```bash
+npx playwright show-report
+```
+
+## Notes
+
+- `.env` is not required in the current setup.
+- Current tests target `https://www.demoblaze.com/`.

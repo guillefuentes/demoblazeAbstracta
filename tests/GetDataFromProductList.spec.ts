@@ -1,19 +1,20 @@
 import { test } from '../fixtures/pageManager';
-import * as writeJSONfile from 'fs';
-import * as helper from '@helpers/productHelpers';
 import ProductInformation from '@interface/ProductInformation';
 
-const baseURL = 'https://www.demoblaze.com/';
+import * as writeJSONfile from 'fs';
+import * as helper from '@helpers/productHelpers';
+import * as testData from '@test-data/testData';
+
 const currentDate = new Date().toISOString().split('T')[0];
 const outputFilePath = `./output/ProductDetails_${currentDate}.json`;
 
-test.describe(`Demoblaze Store - Mandatory Test #1`, { tag: ['@BLZ_001'] }, () => {
+test.describe(`Demoblaze Store - Mandatory Test #1`, { tag: ['@BLZ_001', '@PRODUCT_DATA'] }, () => {
     test('get Data From Product List', async ({ actions, assert, mainPage }, testInfo) => {
         await test.step('Navigate to homepage', async () => {
-            await mainPage.navigateTo(baseURL);
+            await mainPage.navigateTo(testData.baseURL);
 
             await test.step('Verify the page URL and title', async () => {
-                await assert.pageURLContains(baseURL);
+                await assert.pageURLContains(testData.baseURL);
                 await assert.pageTitleIs('STORE');
             });
         });

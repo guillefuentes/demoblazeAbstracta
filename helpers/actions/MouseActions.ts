@@ -34,10 +34,4 @@ export default class MouseActions {
     async scrollBy(offsetX: number = 0, offsetY: number = 50): Promise<void> {
         await this.page.mouse.wheel(offsetX, offsetY);
     };
-
-    async dismissAlert(): Promise<void> {
-        this.page.once('dialog', async dialog => {
-            await dialog.dismiss();
-        });
-    };
 }

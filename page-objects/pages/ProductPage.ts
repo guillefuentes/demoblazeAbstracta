@@ -45,4 +45,8 @@ export default class ProductPage extends BasePage {
         this.productDescription = this.productLocators.productDescription;
         this.addToCartButton = this.productLocators.addToCartButton;
     };
+
+    async clickAddToCart() {
+        await this.actions.mouse.click(this.addToCartButton);
+    };
 }

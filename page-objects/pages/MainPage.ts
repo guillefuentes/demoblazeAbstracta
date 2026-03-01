@@ -1,7 +1,6 @@
 import { Locator, Page } from '@playwright/test';
-import BasePage from './BasePage';
 import { SignUpModal, LogInModal } from '@modals'
-import { HeaderPage, FooterPage } from '@pages';
+import { HeaderPage, FooterPage, BasePage } from '@pages';
 
 export default class MainPage extends BasePage {
     signUpModal: SignUpModal;
@@ -94,32 +93,32 @@ export default class MainPage extends BasePage {
     };
 
     async clickNextPaginationButton() {
-        await this.productGridSection.nextButton.click();
+        await this.actions.mouse.click(this.productGridSection.nextButton);
     };
 
     async clickPreviousPaginationButton() {
-        await this.productGridSection.previousButton.click();
+        await this.actions.mouse.click(this.productGridSection.previousButton);
     };
 
     async clickCategory(category: 'phone' | 'laptop' | 'monitor') {
         switch (category) {
             case 'phone':
-                await this.categoriesSection.phoneCategory.click();
+                await this.actions.mouse.click(this.categoriesSection.phoneCategory)
                 break;
             case 'laptop':
-                await this.categoriesSection.laptopCategory.click();
+                await this.actions.mouse.click(this.categoriesSection.laptopCategory)
                 break;
             case 'monitor':
-                await this.categoriesSection.monitorCategory.click();
+                await this.actions.mouse.click(this.categoriesSection.monitorCategory)
                 break;
         }
     };
 
     async clickCarrouselNext() {
-        await this.carrouselNextButton.click();
+        await this.actions.mouse.click(this.carrouselNextButton);
     };
 
     async clickCarrouselPrevious() {
-        await this.carrouselPreviousButton.click();
+        await this.actions.mouse.click(this.carrouselPreviousButton);
     };
 }

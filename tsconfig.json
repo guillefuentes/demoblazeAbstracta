@@ -16,7 +16,8 @@
       "@pages": ["./page-objects/pages/index.ts"],
       "@modals": ["./page-objects/modals/index.ts"],
       "@interface/*": ["./interface/*"],
-      "@helpers/*": ["./helpers/*"]
+      "@helpers/*": ["./helpers/*"],
+      "@test-data/*": ["./test-data/*"]
     },
   },
   "include": [
