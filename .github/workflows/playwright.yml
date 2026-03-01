@@ -37,13 +37,14 @@ jobs:
         # Extract test results from JSON output
         if [ -f "test-results.json" ]; then
           echo "Found test-results.json, parsing..."
-          # Count tests by their result status
-          PASSED=$(jq '[.. | .results? | select(. != null) | .[] | select(.status == "passed")] | length' test-results.json 2>/dev/null || echo "0")
-          FAILED=$(jq '[.. | .results? | select(. != null) | .[] | select(.status == "failed")] | length' test-results.json 2>/dev/null || echo "0")
-          SKIPPED=$(jq '[.. | .results? | select(. != null) | .[] | select(.status == "skipped")] | length' test-results.json 2>/dev/null || echo "0")
+          # Count tests by their FINAL result status (after retries)
+          # Each test has results[] array - we want the last result which is the final status
+          PASSED=$(jq '[.. | .tests? | select(. != null) | .[] | select(.results[-1].status == "passed")] | length' test-results.json 2>/dev/null || echo "0")
+          FAILED=$(jq '[.. | .tests? | select(. != null) | .[] | select(.results[-1].status == "failed")] | length' test-results.json 2>/dev/null || echo "0")
+          SKIPPED=$(jq '[.. | .tests? | select(. != null) | .[] | select(.results[-1].status == "skipped")] | length' test-results.json 2>/dev/null || echo "0")
         elif [ -f "test-output.log" ]; then
           echo "Found test-output.log, parsing..."
-          # Fallback to parsing log output
+          # Fallback to parsing log output (already shows final counts)
           PASSED=$(grep -oE '[0-9]+ passed' test-output.log 2>/dev/null | grep -oE '[0-9]+' | head -1 || echo "0")
           FAILED=$(grep -oE '[0-9]+ failed' test-output.log 2>/dev/null | grep -oE '[0-9]+' | head -1 || echo "0")
           SKIPPED=$(grep -oE '[0-9]+ skipped' test-output.log 2>/dev/null | grep -oE '[0-9]+' | head -1 || echo "0")
