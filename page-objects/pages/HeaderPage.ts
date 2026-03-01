@@ -12,14 +12,14 @@ export default class HeaderPage extends BasePage {
     signUpLink: Locator;
 
     readonly headerLocators = {
-        headerContainer: this.page.locator('header'),
-        headerLogo: this.page.locator('header .logo'),
-        homeLink: this.page.locator('header .nav-bar .home'),
-        contactLink: this.page.locator('header .nav-bar .contact'),
-        aboutUsLink: this.page.locator('header .nav-bar .about'),
-        cartLink: this.page.locator('header .nav-bar .cart'),
-        logInLink: this.page.locator('header .nav-bar .login'),
-        signUpLink: this.page.locator('header .nav-bar .signup'),
+        headerContainer: this.page.locator('container'),
+        headerLogo: this.page.locator('.navbar-brand'),
+        homeLink: this.page.locator('.nav-link').filter({ hasText: 'Home' }),
+        contactLink: this.page.locator('.nav-link').filter({ hasText: 'Contact' }),
+        aboutUsLink: this.page.locator('.nav-link').filter({ hasText: 'About us' }),
+        cartLink: this.page.locator('.nav-link').filter({ hasText: 'Cart' }),
+        logInLink: this.page.locator('.nav-link').filter({ hasText: 'Log in' }),
+        signUpLink: this.page.locator('.nav-link').filter({ hasText: 'Sign up' }),
     };
 
     constructor(page: Page) {

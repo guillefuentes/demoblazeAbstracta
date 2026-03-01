@@ -35,10 +35,9 @@ export default class MouseActions {
         await this.page.mouse.wheel(offsetX, offsetY);
     };
 
-    async clickJS(locator: Locator): Promise<void> {
-        await locator.waitFor({ state: 'attached' });
-        await locator.evaluate((el: HTMLElement) => {
-            el.click();
+    async dismissAlert(): Promise<void> {
+        this.page.once('dialog', async dialog => {
+            await dialog.dismiss();
         });
     };
 }

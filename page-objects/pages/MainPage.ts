@@ -51,7 +51,7 @@ export default class MainPage extends BasePage {
                 productDescription: this.page.locator('#article'),
             },
             previousButton: this.page.getByRole('button', { name: 'Previous' }),
-            nextButton: this.page.getByRole('button', { name: 'Next' })
+            nextButton: this.page.locator('.pagination').getByRole('button', { name: 'Next' })
         },
     };
 

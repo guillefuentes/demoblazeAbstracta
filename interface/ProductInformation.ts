@@ -1,5 +1,6 @@
 export default interface ProductInformation {
   productTitle: string;
-  productPrice: string;
+  productPrice: number;
   productLink: string;
+  productDescription: string;
 };

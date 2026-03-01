@@ -1,4 +1,4 @@
-import { APIResponse, Locator, Page, expect } from '@playwright/test';
+import { Locator, Page, expect, Response } from '@playwright/test';
 
 export default class Assert {
     constructor(protected page: Page) { }
@@ -67,17 +67,44 @@ export default class Assert {
         await expect(this.page).not.toHaveTitle(new RegExp(expectedSubstring));
     };
 
-    //API Response Assertions
-    async responseIsOK(response: APIResponse): Promise<void> {
-        await expect(response).toBeOK();
-    }
 
-    async responseStatusIs(response: APIResponse, expectedStatus: number): Promise<void> {
+    //API Response Assertions
+    async responseStatusIs(response: Response, expectedStatus: number): Promise<void> {
         expect(response.status()).toBe(expectedStatus);
     }
 
-    async responseHasErrors(response: APIResponse): Promise<void> {
+    async responseStatusIsOK(response: Response): Promise<void> {
+        expect(response.status()).toBe(200);
+    }
+
+    async responseHasErrors(response: Response): Promise<void> {
         const isErrorStatus = response.status() >= 400 && response.status() < 600;
         expect(isErrorStatus).toBeTruthy();
+    }
+
+    //JavaScript Dialog Assertions
+    async alertMessageIs(expectedMessage: string): Promise<void> {
+        this.page.once('dialog', async dialog => {
+            expect(dialog.type()).toBe('alert');
+            expect(dialog.message()).toBe(expectedMessage);
+        });
+    }
+
+    async confirmMessageIs(expectedMessage: string, accept: boolean = true): Promise<void> {
+        this.page.once('dialog', async dialog => {
+            expect(dialog.type()).toBe('confirm');
+            expect(dialog.message()).toBe(expectedMessage);
+
+            if (accept) await dialog.accept();
+        });
+    }
+
+    async promptMessageIs(expectedMessage: string, inputText: string | null = null): Promise<void> {
+        this.page.once('dialog', async dialog => {
+            expect(dialog.type()).toBe('prompt');
+            expect(dialog.message()).toBe(expectedMessage);
+
+            if (inputText !== null) await dialog.accept(inputText);
+        });
     }
 }
